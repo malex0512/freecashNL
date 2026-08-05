@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#050e08">
+<title>FreeCash – Exclusieve beloningen</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{background:#050e08 !important;color-scheme:dark;}
+:root{
+  --bg:#050e08;
+  --card:#091810;
+  --card2:#0d2016;
+  --gr:#2d9e6b;
+  --gr2:#3bbf82;
+  --gr3:#4ade80;
+  --gr4:#86efac;
+  --teal:#0f766e;
+  --teal2:#14b8a6;
+  --g:#f59e0b;--g2:#fcd34d;
+  --text:#e8f5ee;--mu:#7a9e8a;--mu2:#4b6e5a;--r:18px;
+}
+html,body{min-height:100vh;background:#050e08 !important;background-color:#050e08 !important;font-family:'DM Sans',sans-serif;color:var(--text);display:flex;flex-direction:column;align-items:center;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+body::before{content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 90% 50% at 50% -8%,rgba(45,158,107,0.2) 0%,transparent 60%),
+    radial-gradient(ellipse 55% 40% at 100% 60%,rgba(15,118,110,0.1) 0%,transparent 55%),
+    radial-gradient(ellipse 45% 35% at 0% 80%,rgba(45,158,107,0.07) 0%,transparent 55%);
+  pointer-events:none;z-index:0;}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(110px);background:rgba(5,14,8,0.96);border:1px solid rgba(45,158,107,0.3);backdrop-filter:blur(16px);padding:11px 15px;border-radius:14px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 32px rgba(0,0,0,0.7);z-index:9000;width:calc(100% - 32px);max-width:370px;transition:transform 0.42s cubic-bezier(0.175,0.885,0.32,1.275);}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.ta{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#1a6644,#2d9e6b);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.tb{flex:1;min-width:0;}
+.tn{font-family:'Sora',sans-serif;font-size:12px;font-weight:700;color:#fff;margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.td{font-size:11px;color:var(--mu);}
+.tpt{font-family:'Sora',sans-serif;font-size:12.5px;font-weight:900;color:var(--gr3);white-space:nowrap;}
+
+/* REDIRECT */
+#ro{position:fixed;inset:0;background:rgba(5,14,8,0.97);z-index:9998;display:none;flex-direction:column;align-items:center;justify-content:center;padding:32px;backdrop-filter:blur(8px);}
+#ro.show{display:flex;animation:fIn 0.25s ease;}
+@keyframes fIn{from{opacity:0}to{opacity:1}}
+.rs{width:46px;height:46px;border:3px solid rgba(45,158,107,0.15);border-top:3px solid var(--gr2);border-right:3px solid var(--teal2);border-radius:50%;animation:spin 0.8s linear infinite;margin-bottom:18px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.rm{font-family:'Sora',sans-serif;font-size:15px;font-weight:700;color:#fff;text-align:center;margin-bottom:6px;}
+.rsub{font-size:13px;color:var(--mu);text-align:center;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shine{0%{left:-60%}100%{left:160%}}
+@keyframes ctaP{
+  0%,100%{box-shadow:0 0 26px rgba(45,158,107,0.45),0 4px 18px rgba(0,0,0,0.5);}
+  50%{box-shadow:0 0 44px rgba(59,191,130,0.65),0 4px 18px rgba(0,0,0,0.5);}
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+@keyframes floatBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes mFadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes unlockBob{0%,100%{transform:scale(1);filter:drop-shadow(0 0 10px rgba(45,158,107,0.5));}50%{transform:scale(1.08);filter:drop-shadow(0 0 20px rgba(59,191,130,0.7));}}
+
+/* PAGE */
+.page{width:100%;max-width:430px;display:flex;flex-direction:column;align-items:center;padding-bottom:48px;position:relative;z-index:1;animation:fadeUp 0.35s ease;}
+
+/* TOP BAR */
+.topbar{width:100%;display:flex;align-items:center;justify-content:space-between;padding:10px 18px 8px;}
+.brand{display:flex;align-items:center;gap:9px;}
+.brand-logo{width:34px;height:34px;border-radius:10px;overflow:hidden;box-shadow:0 0 12px rgba(45,158,107,0.35);animation:floatBob 4s ease-in-out infinite;}
+.brand-logo img{width:34px;height:34px;object-fit:cover;display:block;}
+.brand-name{font-family:'Sora',sans-serif;font-size:15px;font-weight:800;background:linear-gradient(90deg,#e8f5ee,#3bbf82 50%,#14b8a6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.members-pill{display:flex;align-items:center;gap:5px;background:rgba(45,158,107,0.1);border:1px solid rgba(45,158,107,0.22);border-radius:99px;padding:4px 11px;font-size:11.5px;font-weight:700;color:var(--gr2);}
+.mpulse{width:6px;height:6px;border-radius:50%;background:var(--gr2);animation:blink 1.4s ease-in-out infinite;}
+
+/* ABOVE FOLD */
+.above-fold{width:100%;padding:4px 18px 14px;display:flex;flex-direction:column;align-items:center;text-align:center;}
+.badge{display:inline-flex;align-items:center;gap:6px;background:rgba(45,158,107,0.1);border:1px solid rgba(45,158,107,0.25);border-radius:99px;padding:5px 14px;font-size:11.5px;font-weight:700;color:var(--gr4);margin-bottom:10px;}
+
+/* TIMER */
+.timer-badge{display:inline-flex;align-items:center;gap:10px;background:rgba(45,158,107,0.08);border:1px solid rgba(45,158,107,0.22);border-radius:99px;padding:6px 16px;margin-bottom:12px;font-size:13px;font-weight:600;color:var(--gr4);}
+.timer-badge-label{font-size:12px;font-weight:600;color:var(--mu);}
+.timer-badge-val{font-family:'Sora',sans-serif;font-size:15px;font-weight:900;color:#f59e0b;text-shadow:0 0 10px rgba(245,158,11,0.4);letter-spacing:1px;min-width:48px;text-align:center;}
+
+.headline{font-family:'Sora',sans-serif;font-size:34px;font-weight:900;line-height:1.0;letter-spacing:-1.2px;margin-bottom:8px;}
+.hw{color:#fff;display:block;}
+.hg{background:linear-gradient(90deg,#2d9e6b,#3bbf82,#14b8a6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;}
+.hero-sub{font-size:13px;color:var(--mu);line-height:1.55;margin-bottom:14px;max-width:340px;}
+
+/* CTA */
+.cta-btn{display:block;width:100%;padding:17px 24px;border-radius:16px;background:linear-gradient(135deg,#1a6644 0%,#2d9e6b 50%,#3bbf82 100%);color:#fff;font-family:'Sora',sans-serif;font-size:17px;font-weight:800;text-align:center;border:none;cursor:pointer;letter-spacing:0.1px;animation:ctaP 2.8s ease-in-out infinite;-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden;transition:all 0.22s ease;margin-bottom:10px;}
+.cta-btn::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);animation:shine 3s linear 1.5s infinite;}
+.cta-btn:hover{transform:translateY(-2px) scale(1.01);animation:none;}
+.cta-btn:active{transform:scale(0.98);animation:none;}
+.cta-note{font-size:11.5px;color:var(--mu2);text-align:center;display:flex;align-items:center;justify-content:center;gap:5px;margin-bottom:12px;}
+
+/* SOCIAL */
+.social-proof{width:calc(100% - 32px);background:rgba(45,158,107,0.07);border:1px solid rgba(45,158,107,0.18);border-radius:12px;padding:8px 16px;font-size:13px;color:var(--mu);text-align:center;margin-bottom:8px;}
+.social-proof strong{color:#fff;}
+.rating-line{font-size:12px;color:var(--mu2);text-align:center;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:6px;}
+.stars{color:var(--g);font-size:13px;}
+
+/* DIVIDER */
+.div-line{width:calc(100% - 32px);height:1px;background:linear-gradient(90deg,transparent,rgba(45,158,107,0.2),rgba(20,184,166,0.1),transparent);margin-bottom:22px;}
+
+/* SECTION TITLE */
+.sec-title{width:calc(100% - 32px);font-size:11px;font-weight:800;color:var(--mu2);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;}
+
+/* HOW IT WORKS */
+.how-grid{width:calc(100% - 32px);display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-bottom:24px;}
+.how-card{background:var(--card);border-radius:14px;border:1px solid rgba(45,158,107,0.12);padding:14px 10px;text-align:center;position:relative;overflow:hidden;}
+.how-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#1a6644,#2d9e6b,#14b8a6);}
+.how-num{font-family:'Sora',sans-serif;font-size:10px;font-weight:800;color:var(--gr2);background:rgba(45,158,107,0.1);border-radius:99px;padding:2px 7px;display:inline-block;margin-bottom:7px;}
+.how-ico{font-size:20px;margin-bottom:5px;}
+.how-t{font-family:'Sora',sans-serif;font-size:11.5px;font-weight:700;color:#fff;margin-bottom:3px;line-height:1.3;}
+.how-s{font-size:10.5px;color:var(--mu);line-height:1.35;}
+
+/* TASKS */
+.tasks{width:calc(100% - 32px);display:flex;flex-direction:column;gap:9px;margin-bottom:18px;}
+.task{background:var(--card);border-radius:var(--r);border:1px solid rgba(255,255,255,0.05);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:all 0.18s ease;-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden;}
+.task::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(45,158,107,0.2),transparent);}
+.task:hover,.task:active{border-color:rgba(45,158,107,0.35);transform:translateX(3px);}
+.task.hot{background:linear-gradient(135deg,rgba(45,158,107,0.1),var(--card));border-color:rgba(45,158,107,0.22);}
+.tl{flex:1;}
+.tname{font-family:'Sora',sans-serif;font-size:14px;font-weight:700;color:#fff;margin-bottom:3px;display:flex;align-items:center;gap:7px;}
+.hot-tag{font-size:9px;font-weight:800;text-transform:uppercase;background:linear-gradient(90deg,#1a6644,#2d9e6b);color:#fff;border-radius:4px;padding:2px 6px;}
+.tsub{font-size:12px;color:var(--mu);}
+.tr{display:flex;align-items:center;gap:7px;flex-shrink:0;}
+.tstar{font-size:11px;color:var(--g2);}
+.tgo{font-family:'Sora',sans-serif;font-size:12.5px;font-weight:800;color:var(--gr2);}
+.tmore{font-family:'Sora',sans-serif;font-size:12.5px;font-weight:800;color:var(--teal2);}
+
+/* INFO CARDS */
+.infos{width:calc(100% - 32px);display:flex;flex-direction:column;gap:9px;margin-bottom:22px;}
+.info{border-radius:var(--r);padding:13px 15px;display:flex;align-items:flex-start;gap:11px;}
+.info.note{background:rgba(45,158,107,0.06);border:1px solid rgba(45,158,107,0.15);}
+.info.redeem{background:rgba(20,184,166,0.06);border:1px solid rgba(20,184,166,0.15);}
+.info-ico{font-size:18px;flex-shrink:0;margin-top:1px;}
+.info-t{font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:3px;}
+.info-b{font-size:12px;color:var(--mu);line-height:1.5;}
+.info-b strong{color:var(--gr3);}
+
+/* MODAL */
+#modalOverlay{position:fixed;inset:0;background:rgba(5,14,8,0.9);backdrop-filter:blur(10px);z-index:99999;display:none;align-items:center;justify-content:center;padding:24px;}
+#modalOverlay.open{display:flex;}
+.modal-box{width:100%;max-width:380px;background:linear-gradient(160deg,#091810,#0d2016);border:1px solid rgba(45,158,107,0.3);border-radius:24px;padding:32px 24px 28px;text-align:center;position:relative;box-shadow:0 0 60px rgba(45,158,107,0.15),0 20px 60px rgba(0,0,0,0.7);animation:mFadeUp 0.32s cubic-bezier(.4,0,.2,1);}
+.modal-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:24px 24px 0 0;background:linear-gradient(90deg,#1a6644,#2d9e6b,#3bbf82,#14b8a6);}
+.modal-close-btn{position:absolute;top:14px;right:16px;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:var(--mu);font-size:16px;cursor:pointer;transition:all 0.2s ease;display:flex;align-items:center;justify-content:center;}
+.modal-close-btn:hover{background:rgba(255,255,255,0.12);color:#fff;}
+.modal-icon{font-size:48px;margin-bottom:14px;animation:unlockBob 2.5s ease-in-out infinite;}
+.modal-title{font-family:'Sora',sans-serif;font-size:20px;font-weight:900;color:#fff;margin-bottom:8px;letter-spacing:-0.3px;}
+.modal-sub{font-size:13.5px;color:var(--mu);line-height:1.6;margin-bottom:22px;}
+.modal-sub strong{color:var(--gr4);}
+.modal-steps{background:rgba(45,158,107,0.06);border:1px solid rgba(45,158,107,0.15);border-radius:14px;padding:14px 16px;margin-bottom:22px;text-align:left;display:flex;flex-direction:column;gap:10px;}
+.modal-step{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--mu);}
+.modal-step-num{width:22px;height:22px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,#1a6644,#3bbf82);display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:11px;font-weight:800;color:#fff;}
+#continueBtn{display:block;width:100%;padding:18px;border-radius:14px;background:linear-gradient(135deg,#1a6644 0%,#2d9e6b 55%,#3bbf82 100%);color:#fff;font-family:'Sora',sans-serif;font-size:16px;font-weight:800;text-align:center;border:none;cursor:pointer;box-shadow:0 0 24px rgba(45,158,107,0.45),0 4px 18px rgba(0,0,0,0.4);animation:ctaP 2.8s ease-in-out infinite;-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden;transition:all 0.22s ease;letter-spacing:0.2px;}
+#continueBtn::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);animation:shine 3s linear 1.5s infinite;}
+#continueBtn:hover{transform:translateY(-1px) scale(1.01);animation:none;}
+#continueBtn:active{transform:scale(0.98);animation:none;}
+.modal-note{font-size:11.5px;color:var(--mu2);margin-top:10px;}
+
+/* FOOTER */
+footer{margin-top:32px;text-align:center;padding:0 20px;width:100%;}
+.footer-links{font-size:12px;color:var(--mu2);margin-bottom:5px;}
+.footer-links a{color:var(--mu2);text-decoration:none;}
+.sep{margin:0 6px;opacity:0.35;}
+.footer-copy{font-size:11px;color:rgba(75,110,90,0.5);}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-thumb{background:rgba(45,158,107,0.25);border-radius:4px;}
+</style>
+</head>
+<body>
+
+<div id="ro">
+  <div class="rs"></div>
+  <div class="rm">Jouw dashboard laden&hellip;</div>
+  <div class="rsub">Even geduld</div>
+</div>
+
+<div class="toast" id="toast">
+  <div class="ta" id="tEmoji">&#127881;</div>
+  <div class="tb">
+    <div class="tn" id="tName">Emma</div>
+    <div class="td">heeft zojuist beloningspunten verzameld</div>
+  </div>
+  <div class="tpt">+pts</div>
+</div>
+
+<div class="page">
+
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-logo"><img src="data:image/png;base64,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" alt="FreeCash"></div>
+      <span class="brand-name">FreeCash</span>
+    </div>
+    <div class="members-pill"><div class="mpulse"></div>&nbsp;2M+ leden</div>
+  </div>
+
+  <div class="above-fold">
+    <div class="badge">&#11088; Trending app deze week</div>
+    <div class="timer-badge">
+      <span class="timer-badge-label">&#9203; Aanbieding verloopt over</span>
+      <span class="timer-badge-val" id="timer">20:00</span>
+    </div>
+    <div class="headline">
+      <span class="hw">Test apps &amp;</span>
+      <span class="hg">verdien beloningen</span>
+    </div>
+    <p class="hero-sub">Doe mee met miljoenen die apps testen, feedback geven en beloningspunten verzamelen. Inwisselen voor cadeaukaarten, PayPal en meer.</p>
+    <button class="cta-btn offer-card">Claim mijn gratis beloning &rarr;</button>
+    <div class="cta-note">&#128274;&nbsp;Gratis &bull; Geen kaart nodig &bull; Directe punten</div>
+    <div class="social-proof">&#128101; <strong>14.832 mensen</strong> sloten zich deze week aan bij FreeCash</div>
+    <div class="rating-line">
+      <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+      Beoordeeld als Uitstekend op Trustpilot &bull; 2M+ leden
+    </div>
+  </div>
+
+  <div class="div-line"></div>
+
+  <div class="sec-title">Hoe het werkt</div>
+  <div class="how-grid">
+    <div class="how-card">
+      <div class="how-num">01</div>
+      <div class="how-ico">&#128100;</div>
+      <div class="how-t">Gratis aanmelden</div>
+      <div class="how-s">Minder dan 60 seconden</div>
+    </div>
+    <div class="how-card">
+      <div class="how-num">02</div>
+      <div class="how-ico">&#127918;</div>
+      <div class="how-t">Kies een taak</div>
+      <div class="how-s">Games, apps of enquêtes</div>
+    </div>
+    <div class="how-card">
+      <div class="how-num">03</div>
+      <div class="how-ico">&#127873;</div>
+      <div class="how-t">Verzamel punten</div>
+      <div class="how-s">Inwisselen wanneer je wilt</div>
+    </div>
+  </div>
+
+  <div class="sec-title">Populaire taken nu</div>
+  <div class="tasks">
+    <div class="task hot offer-card">
+      <div class="tl">
+        <div class="tname">Apps testen&nbsp;<span class="hot-tag">HOT</span></div>
+        <div class="tsub">Probeer een nieuwe app &amp; geef feedback</div>
+      </div>
+      <div class="tr"><div class="tstar">&#9733; 5.0</div><div class="tgo">Ga &rsaquo;</div></div>
+    </div>
+    <div class="task offer-card">
+      <div class="tl">
+        <div class="tname">Games testen</div>
+        <div class="tsub">Speel &amp; bereik de doelen</div>
+      </div>
+      <div class="tr"><div class="tstar">&#9733; 5.0</div><div class="tgo">Ga &rsaquo;</div></div>
+    </div>
+    <div class="task offer-card">
+      <div class="tl">
+        <div class="tname">Snelle enquêtes</div>
+        <div class="tsub">Beantwoord een paar vragen</div>
+      </div>
+      <div class="tr"><div class="tstar">&#9733; 4.9</div><div class="tgo">Ga &rsaquo;</div></div>
+    </div>
+    <div class="task offer-card">
+      <div class="tl">
+        <div class="tname">100+ meer taken</div>
+        <div class="tsub">Beschikbaar na aanmelding</div>
+      </div>
+      <div class="tr"><div class="tstar">&#9733; 4.9</div><div class="tmore">Meer &rsaquo;</div></div>
+    </div>
+  </div>
+
+  <div class="infos">
+    <div class="info note">
+      <div class="info-ico">&#128274;</div>
+      <div>
+        <div class="info-t">Goed om te weten</div>
+        <div class="info-b">Voer bij aanmelding je leeftijd in als <strong>25+</strong> om de volledige beloningscatalogus te ontgrendelen.</div>
+      </div>
+    </div>
+    <div class="info redeem">
+      <div class="info-ico">&#127873;</div>
+      <div>
+        <div class="info-t">Wissel je punten in voor</div>
+        <div class="info-b">PayPal-overschrijvingen, cadeaukaarten, crypto en meer &mdash; geen minimaal saldo vereist.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="width:calc(100% - 32px);">
+    <button class="cta-btn offer-card">Claim mijn gratis beloning &rarr;</button>
+    <div class="cta-note">&#128274;&nbsp;Gratis &bull; Geen kaart nodig &bull; Directe punten</div>
+  </div>
+
+  <footer>
+    <div class="footer-links">
+      <a href="#">Privacybeleid</a><span class="sep">&middot;</span>
+      <a href="#">Voorwaarden</a><span class="sep">&middot;</span>
+      <a href="#">Contact</a>
+    </div>
+    <div class="footer-copy">&copy; 2025 FreeCash. Alle rechten voorbehouden.</div>
+  </footer>
+
+</div>
+
+<!-- MODAL -->
+<div id="modalOverlay">
+  <div class="modal-box">
+    <div class="modal-close-btn" id="modalClose">&#215;</div>
+    <div class="modal-icon">&#128275;</div>
+    <div class="modal-title">Je bent er bijna!</div>
+    <div class="modal-sub">Jouw <strong>gratis beloningsplek</strong> is gereserveerd. Volg de stappen hieronder om je welkomstbonus te activeren.</div>
+    <div class="modal-steps">
+      <div class="modal-step"><div class="modal-step-num">1</div><span>Maak je <strong style="color:#fff;">gratis account</strong> aan op de volgende pagina</span></div>
+      <div class="modal-step"><div class="modal-step-num">2</div><span>Voer leeftijd <strong style="color:#4ade80;">18+</strong> in om alle aanbiedingen te ontgrendelen</span></div>
+      <div class="modal-step"><div class="modal-step-num">3</div><span>Kies een taak &amp; verzamel <strong style="color:#fff;">beloningspunten</strong></span></div>
+    </div>
+    <button id="continueBtn">Toegang tot mijn beloningen &rarr;</button>
+    <div class="modal-note">&#128274; Gratis &bull; Geen creditcard &bull; Directe punten</div>
+  </div>
+</div>
+
+<script>
+var OFFER = "https://taprkr.com/r/eyJ0IjoiZnJlZWNhc2gtY3BpIiwidGlkIjoiOGJmYTMwMmMyZDliZDk4ZmNjYjEiLCJ0cyI6MTc4NTk2ODgwNjAwMH0";
+function go(){document.getElementById('ro').classList.add('show');setTimeout(function(){window.location.href=OFFER;},900);}
+
+var timerEl=document.getElementById('timer');
+var seconds=20*60;
+function renderTimer(){
+  var m=String(Math.floor(seconds/60)).padStart(2,'0');
+  var s=String(seconds%60).padStart(2,'0');
+  if(timerEl) timerEl.textContent=m+':'+s;
+}
+renderTimer();
+setInterval(function(){if(seconds>0){seconds--;renderTimer();} },1000);
+
+var modalOverlay=document.getElementById('modalOverlay');
+var modalClose=document.getElementById('modalClose');
+var continueBtn=document.getElementById('continueBtn');
+var offerCards=document.querySelectorAll('.offer-card');
+
+function openModal(){modalOverlay.classList.add('open');document.body.style.overflow='hidden';}
+function closeModal(){modalOverlay.classList.remove('open');document.body.style.overflow='';}
+if(modalClose){modalClose.addEventListener('click',closeModal);}
+if(modalOverlay){modalOverlay.addEventListener('click',function(e){if(e.target===modalOverlay)closeModal();});}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+if(continueBtn){continueBtn.addEventListener('click',function(){
+  var baseUrl='https://raintrkr.com/r/eyJ0IjoiZnJlZWNhc2gtY3BpIiwidGlkIjoiOGJmYTMwMmMyZDliZDk4ZmNjYjEiLCJ0cyI6MTc3ODUzMDQ2NTU3OX0';
+  var redirectUrl=new URL(baseUrl);
+  var urlParams=new URLSearchParams(window.location.search);
+  var s2Value=urlParams.get('s2');
+  if(s2Value){redirectUrl.searchParams.set('s1',s2Value);}
+  redirectUrl.searchParams.set('feb','1');
+  window.location.href=redirectUrl.toString();
+});}
+offerCards.forEach(function(card){card.addEventListener('click',openModal);});
+
+var NAMES=["Liam", "Sarah", "Kevin", "Emma", "Lars", "Chloe", "Daan", "Sophie", "Finn", "Mia", "Noah", "Olivia", "Willem", "Ava", "Lucas", "Lotte", "Sanne", "Bram"];
+var CITIES=["Amsterdam", "Rotterdam", "Den Haag", "Utrecht", "Eindhoven", "Groningen", "Tilburg", "Almere", "Breda", "Nijmegen", "Enschede", "Haarlem", "Arnhem", "Zaandam", "Maastricht", "Leiden"];
+var EMOJIS=['&#127881;','&#128176;','&#10024;','&#127942;','&#11088;'];
+var lastN='';
+function ri(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+function rp(a){return a[Math.floor(Math.random()*a.length)];}
+function showToast(){
+  var av=NAMES.filter(function(n){return n!==lastN;});
+  var name=rp(av);lastN=name;
+  var city=rp(CITIES),emoji=rp(EMOJIS);
+  document.getElementById('tEmoji').innerHTML=emoji;
+  document.getElementById('tName').textContent=name+' • '+city;
+  var t=document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');setTimeout(showToast,ri(8000,16000));},4500);
+}
+setTimeout(showToast,5000);
+</script>
+</body>
+</html>
